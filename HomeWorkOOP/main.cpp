@@ -22,6 +22,16 @@ public:
 	{
 		this->y = y;
 	}
+
+	//			Methods:
+	double distance(Point other)
+	{
+		double x_distance = this->x - other.x;
+		double y_distance = this->y - other.y;
+		double distance = sqrt(x_distance * x_distance + y_distance * y_distance);
+		return distance;
+
+	}
 };
 
 //#define STRUCT_POINT
@@ -35,6 +45,11 @@ void main()
 	A.set_y(3);
 	cout << A.get_x() << "\t" << A.get_y() << endl;
 
+	Point B;
+	B.set_x(7);
+	B.set_y(8);
+	cout << "Расстояниеот точки 'А' до точки 'B': " << A.distance(B) << endl;
+	cout << "Расстояниеот точки 'B' до точки 'A': " << B.distance(A) << endl;
 #ifdef STRUCT_POINT
 	int a;
 	Point A;

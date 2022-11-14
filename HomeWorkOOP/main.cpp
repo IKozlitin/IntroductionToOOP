@@ -6,11 +6,11 @@ class Point
 	double x;
 	double y;
 public:
-	double get_x()
+	double get_x()const
 	{
 		return x;
 	}
-	double get_y()
+	double get_y()const
 	{
 		return y;
 	}
@@ -38,11 +38,9 @@ void main()
 #ifdef STRUCT_POINT
 	int a;
 	Point A;
-
 	A.x = 2;
 	A.y = 3;
 	cout << A.x << "\t" << A.y << endl;
-
 	Point* pA = &A;
 	cout << pA->x << "\t" << pA->y << endl;
 #endif // STRUCT_POINT

@@ -1,6 +1,8 @@
 #include<iostream>
 using namespace std;
 
+#define WIDTH 27
+
 class Fraction
 {
 	int integer;
@@ -39,35 +41,51 @@ public:
 		this->integer = 0;
 		this->numerator = 0;
 		this->denominator = 1;
-		cout << "DefaultConstructor:\t" << this << endl;
+		cout.width(WIDTH);
+		cout << std::left << "DefaultConstructor:" << this << endl;
 	}
 	Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
 		this->denominator = 1;
-		cout << "SingleArgumentConstructor:\t" << this << endl;
+		cout.width(WIDTH);
+		cout << std::left << "SingleArgumentConstructor:" << this << endl;
 	}
 	Fraction(int numerator, int denominator)
 	{
 		this->integer = 0;
 		this->numerator = numerator;
 		set_denominator(denominator);
-		cout << "Constructor:\t" << this << endl;
+		cout.width(WIDTH);
+		cout << std::left << "Constructor:" << this << endl;
 	}
 	Fraction(int integer, int numerator, int denominator)
 	{
 		this->integer = integer;
 		this->numerator = numerator;
 		set_denominator(denominator);
-		cout << "Constructor:\t" << this << endl;
+		cout.width(WIDTH);
+		cout << std::left << "Constructor:" << this << endl;
 	}
 	~Fraction()
 	{
-		cout << "Destructor:\t" << this << endl;
+		cout.width(WIDTH);
+		cout << std::left << "Destructor:" << this << endl;
 	}
 
 	//					Methods:
+	void to_proper()
+	{
+		integer += numerator / denominator;
+		numerator %= denominator;
+	}
+	void to_improper()
+	{
+		numerator += integer * denominator;
+		integer = 0;
+	}
+
 	void print()const
 	{
 		/*
@@ -99,5 +117,11 @@ void main()
 	C.print();
 
 	Fraction D(2, 3, 4);
+	D.print();
+	
+	D.to_improper();
+	D.print();
+
+	D.to_proper();
 	D.print();
 }

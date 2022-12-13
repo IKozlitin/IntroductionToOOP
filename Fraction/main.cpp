@@ -1,4 +1,4 @@
-#define _CRT_SECURE_NO_WARNINGS
+п»ї#define _CRT_SECURE_NO_WARNINGS
 #include<iostream>
 using namespace std;
 
@@ -52,7 +52,7 @@ public:
 		cout.width(WIDTH);
 		cout << std::left << "DefaultConstructor:" << this << endl;
 	}
-	Fraction(int integer)
+	explicit Fraction(int integer)
 	{
 		this->integer = integer;
 		this->numerator = 0;
@@ -76,6 +76,14 @@ public:
 		cout.width(WIDTH);
 		cout << std::left << "Constructor:" << this << endl;
 	}
+	Fraction(double decimal)
+	{
+		decimal += 1e-10;
+		integer = decimal;
+		denominator = 1e+9;
+		numerator = (decimal - integer) * denominator;
+		reduce();
+	}
 	~Fraction()
 	{
 		cout.width(WIDTH);
@@ -96,6 +104,15 @@ public:
 		this->integer = other.integer;
 		this->numerator = other.numerator;
 		this->denominator = other.denominator;
+		cout.width(WIDTH);
+		cout << left << "CopyAssignment:" << this << endl;
+		return *this;
+	}
+	Fraction& operator==(const Fraction& other)
+	{
+		this->integer == other.integer;
+		this->numerator == other.numerator;
+		this->denominator == other.denominator;
 		cout.width(WIDTH);
 		cout << left << "CopyAssignment:" << this << endl;
 		return *this;
@@ -147,7 +164,7 @@ public:
 	{
 		return integer + (double)numerator / denominator;
 	}
-
+	
 	//				Methods:
 		Fraction& to_proper()
 	{
@@ -274,22 +291,22 @@ istream& operator>>(istream& is, Fraction& obj)
 	obj.set_denominator(denominator);*/
 	//obj(integer, numerator, denominator);
 
-	int number[3] = {}; //В это массиве будут хранится числовые значения полученные из строки.
+	int number[3] = {}; //Р’ СЌС‚Рѕ РјР°СЃСЃРёРІРµ Р±СѓРґСѓС‚ С…СЂР°РЅРёС‚СЃСЏ С‡РёСЃР»РѕРІС‹Рµ Р·РЅР°С‡РµРЅРёСЏ РїРѕР»СѓС‡РµРЅРЅС‹Рµ РёР· СЃС‚СЂРѕРєРё.
 
 	const int SIZE = 256;
 	char buffer[SIZE] = {};
 
 	char delimiters[] = " /()";
-	//is >> buffer; //cin сохраняет данные до пробела
-	//Для того, чтобы ввести строку с пробелами нужно использовать cin.getline()
+	//is >> buffer; //cin СЃРѕС…СЂР°РЅСЏРµС‚ РґР°РЅРЅС‹Рµ РґРѕ РїСЂРѕР±РµР»Р°
+	//Р”Р»СЏ С‚РѕРіРѕ, С‡С‚РѕР±С‹ РІРІРµСЃС‚Рё СЃС‚СЂРѕРєСѓ СЃ РїСЂРѕР±РµР»Р°РјРё РЅСѓР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ cin.getline()
 	is.getline(buffer, SIZE);
-	int n = 0; //Счетчик полученных чисел
-	//Функция strtok() делит строку на подстроки используя разделители,
-	//т.е. каждый разделитель заменяется нулем.
+	int n = 0; //РЎС‡РµС‚С‡РёРє РїРѕР»СѓС‡РµРЅРЅС‹С… С‡РёСЃРµР»
+	//Р¤СѓРЅРєС†РёСЏ strtok() РґРµР»РёС‚ СЃС‚СЂРѕРєСѓ РЅР° РїРѕРґСЃС‚СЂРѕРєРё РёСЃРїРѕР»СЊР·СѓСЏ СЂР°Р·РґРµР»РёС‚РµР»Рё,
+	//С‚.Рµ. РєР°Р¶РґС‹Р№ СЂР°Р·РґРµР»РёС‚РµР»СЊ Р·Р°РјРµРЅСЏРµС‚СЃСЏ РЅСѓР»РµРј.
 	for (char* pch = strtok(buffer, delimiters); pch; pch = strtok(NULL, delimiters))
 	{
-		//Функция atoi() - означает ASCII string to integer принимает строку, если строка является числом,
-		//то возвращает int-овый эквивалент этого числа.
+		//Р¤СѓРЅРєС†РёСЏ atoi() - РѕР·РЅР°С‡Р°РµС‚ ASCII string to integer РїСЂРёРЅРёРјР°РµС‚ СЃС‚СЂРѕРєСѓ, РµСЃР»Рё СЃС‚СЂРѕРєР° СЏРІР»СЏРµС‚СЃСЏ С‡РёСЃР»РѕРј,
+		//С‚Рѕ РІРѕР·РІСЂР°С‰Р°РµС‚ int-РѕРІС‹Р№ СЌРєРІРёРІР°Р»РµРЅС‚ СЌС‚РѕРіРѕ С‡РёСЃР»Р°.
 		number[n++] = atoi(pch);
 	}
 	//cout << buffer << endl;
@@ -319,6 +336,7 @@ istream& operator>>(istream& is, Fraction& obj)
 //#define ISTREAM_OPERATOR_CHEK
 //#define TYPE_CONVERSION_BASICS
 //#define CONVERSION_FROM_OTHER_TO_CLASS
+//#define CONVERSION_FROM_CLASS_TO_OTHER
 
 void main()
 {
@@ -380,7 +398,7 @@ void main()
 
 #ifdef ISTREAM_OPERATOR_CHEK
 	Fraction A(50, 75, 80);
-	cout << "Введите простую дробь: ";
+	cout << "Р’РІРµРґРёС‚Рµ РїСЂРѕСЃС‚СѓСЋ РґСЂРѕР±СЊ: ";
 	cin >> A;
 	cout << delimiter << endl;
 	cout << A << endl;
@@ -415,6 +433,7 @@ void main()
 	cout << B << endl;
 #endif // CONVERSION_FROM_OTHER_TO_CLASS
 
+#ifdef CONVERSION_FROM_CLASS_TO_OTHER
 	Fraction A(2, 3, 4);
 	cout << A << endl;
 
@@ -422,4 +441,8 @@ void main()
 	cout << a << endl;
 	double b = (double)A;
 	cout << b << endl;
+#endif // CONVERSION_FROM_CLASS_TO_OTHER
+
+	Fraction A = 2.75; // A = 2 3/4
+	cout << A << endl;
 }
